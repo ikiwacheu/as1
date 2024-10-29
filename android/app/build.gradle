@@ -1,0 +1,75 @@
+buildscript {
+    ext.kotlin_version = '1.8.0' // Установите необходимую версию Kotlin
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:7.0.4" // Проверьте, чтобы эта версия была совместима с вашей версией Android Studio и Flutter
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        // Другие зависимости
+    }
+}
+
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader("UTF-8") { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
+if (flutterVersionCode == null) {
+    flutterVersionCode = "1"
+}
+
+def flutterVersionName = localProperties.getProperty("flutter.versionName")
+if (flutterVersionName == null) {
+    flutterVersionName = "1.0"
+}
+
+android {
+    namespace = "com.example.as1"
+    compileSdk = 34 // Убедитесь, что это значение соответствует версии SDK вашего проекта
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId = "com.example.as1"
+        minSdk = 21 // Убедитесь, что это значение соответствует версии min SDK вашего проекта
+        targetSdk = 34 // Убедитесь, что это значение соответствует версии target SDK вашего проекта
+        versionCode = flutterVersionCode.toInteger()
+        versionName = flutterVersionName
+    }
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.debug
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    // Добавьте другие зависимости здесь
+}
+
+repositories {
+    google()
+    mavenCentral()
+}
